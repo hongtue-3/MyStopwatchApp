@@ -1,0 +1,17 @@
+workflows:
+  ios-workflow:
+    name: Build Đồng hồ IPA
+    environment:
+      xcode: latest
+      vars:
+        APP_ID: "com.example.dongho"
+    scripts:
+      - name: Set up keychain
+        script: |
+          echo "No signing for personal build via AltStore"
+      - name: Build .ipa
+        script: |
+          xcodebuild -scheme DongHoApp -sdk iphoneos -configuration Release -archivePath $CM_BUILD_DIR/DongHoApp.xcarchive archive
+          xcodebuild -exportArchive -archivePath $CM_BUILD_DIR/DongHoApp.xcarchive -exportOptionsPlist ExportOptions.plist -exportPath $CM_BUILD_DIR/build
+    artifacts:
+      - build/*.ipa
